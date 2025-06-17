@@ -1,4 +1,4 @@
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7Ah0FWq1wDOROSQcLQcmcTFXSYlz_9AGinNl9mN_m21bbZPlbroxOAm4ADAlWhAK_8A/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP9PWJAuOYrVq32IR6m5OHuj7tO_UiPzsOd5EXTWaBCOUn-1yEQDpYpzZrkud-3VZ2nQ/exec';
 // const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqpQRgbrT4AaRmD4Cw38TIEk8Jal8UCk9YDbd8rooedJtUmG9t0eYrQ0HqALQPzY7Fbg/exec';
 
 document.getElementById('transportForm').addEventListener('submit', function(e) {
