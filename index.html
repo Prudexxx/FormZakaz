@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Адаптивная форма</title>
+<link rel="stylesheet" href="ind.css">
+</head>
+
+
+  <h2>Форма Заказа</h2>
+  <form id="transportForm">
+    <!-- Ваша существующая разметка формы -->
+    <div class="form-row">
+      <div class="form-group form-group-half">
+        <label for="material">Материал</label>
+        <input type="text" id="material" name="material" placeholder="Введите материал" required>
+      </div>
+      <div class="form-group form-group-half">
+        <label for="date">Дата</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="volume">Объём</label>
+        <div class="volume-container">
+        
+          <select id="volume" name="volume" required>
+            <option value="м3">м³</option>
+            <option value="т">т</option>
+          </select> 
+        </div>
+      </div>
+    </div>
+
+    
+
+
+    <div class="form-row">
+      <div class="form-group form-group-half">
+        <label for="quantity">Количество</label>
+        <input type="number" id="quantity" name="quantity" placeholder="Количество" required>
+      </div>
+
+          <div class="form-group form-group-half">
+        <label for="price">Цена</label>
+        <input type="number" id="price" name="price" placeholder="Цена" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="district">Район</label>
+        <input type="text" id="district" name="district" placeholder="Район" required>
+      </div>
+    </div>
+
+
+    <div class="form-row">
+      <div class="form-group my-full-width">
+        <label for="address_name">Адрес, имя</label>
+        <input type="text" id="address_name" name="address_name" placeholder="Адрес, имя" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="phone">Телефон</label>
+        <input type="text" id="phone" name="phone" placeholder="Телефон" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group my-full-width">
+        <label for="comment">Комментарий</label>
+        <textarea id="comment" name="comment" rows="3" placeholder="Комментарий"></textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="carrier">Перевозчик</label>
+        <input type="text" id="carrier" name="carrier" placeholder="Перевозчик" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="commission">Комиссия</label>
+        <input type="number" id="commission" name="commission" placeholder="Комиссия" required>
+      </div>
+    </div>
+
+    <button type="submit">Отправить</button>
+  </form>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="ind.js"></script>
+<script src="gugl.js"></script>
+</body>
+</html>
