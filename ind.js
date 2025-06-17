@@ -1,7 +1,7 @@
 
   // Ваши переменные с токеном и ID чата
-  const TELEGRAM_BOT_TOKEN = '7831903358:AAHIkRNmstPV5QYoRC5GYqGiuGppTlLiotk';
-  const TELEGRAM_CHAT_ID = '-1002657190873';
+  const TELEGRAM_BOT_TOKEN = '7592808345:AAFAD_tU-gIlmAjIFkwGFIIe5nMJsmuHABc';
+  const TELEGRAM_CHAT_ID = '-1002766897941';
 
   document.getElementById('transportForm').addEventListener('submit', function(e){
     e.preventDefault();
