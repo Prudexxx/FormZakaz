@@ -1,104 +1,289 @@
+  <!DOCTYPE html>
+  <html lang="ru">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Адаптивная форма</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    * {
+      color: #000000 !important;
+    }
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Адаптивная форма</title>
-<link rel="stylesheet" href="ind.css">
-</head>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #9e86e2;
+    }
 
+    form {
+      background: #f19c3b;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
 
-  <h2>Форма Заказа</h2>
-  <form id="transportForm">
-    <!-- Ваша существующая разметка формы -->
-    <div class="form-row">
-      <div class="form-group form-group-half">
-        <label for="material">Материал</label>
-        <input type="text" id="material" name="material" placeholder="Введите материал" required>
-      </div>
-      <div class="form-group form-group-half">
-        <label for="date">Дата доставки</label>
-        <input type="date" id="date" name="date" required>
-      </div>
-    </div>
+    .form-group {
+      flex: 1 1 100%;
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
 
-    <div class="form-row">
-      <div class="form-group">
-        <label for="volume">Объём</label>
-        <div class="volume-container">
-        
-          <select id="volume" name="volume" required>
-            <option value="м3">м³</option>
-            <option value="т">т</option>
-          </select> 
+    @media (min-width: 600px) {
+      .form-row {
+        display: flex;
+        gap: 15px;
+      }
+      .form-group-half {
+        flex: 1 1 48%;
+      }
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #000000;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 8px;
+      border: 1px solid #666;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+      color: #000000 !important;
+      background-color: white;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #666 !important;
+      opacity: 1;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      color: white !important;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      align-self: flex-start;
+    }
+
+    button:hover {
+      background-color: #0069d9;
+    }
+
+    h2 {
+      text-align: center;
+      color: #000000;
+    }
+
+    .date-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .date-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .date-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #000000;
+    }
+
+    .date-option input {
+      margin: 0;
+    }
+
+    .date-option span {
+      color: #000000;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 10px;
+      color: #000000 !important;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      margin: 10px auto;
+      max-width: 800px;
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 10px;
+      background-color: #d4edda;
+      color: #000000 !important;
+      border-radius: 4px;
+      margin: 10px auto;
+      max-width: 800px;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error-message {
+      display: none;
+      text-align: center;
+      padding: 10px;
+      background-color: #f8d7da;
+      color: #000000 !important;
+      border-radius: 4px;
+      margin: 10px auto;
+      max-width: 800px;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+  </head>
+  <body>
+
+    <h2>Форма Заказа</h2>
+    
+    <div class="loading" id="loading">Отправка данных...</div>
+    <div class="success-message" id="successMessage">✅ Данные успешно отправлены!</div>
+    <div class="error-message" id="errorMessage"></div>
+
+    <form id="transportForm">
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label for="material">Материал</label>
+          <input type="text" id="material" name="material" placeholder="Введите материал" required>
+        </div>
+
+        <div class="form-group form-group-half">
+          <label for="delivery_date">Дата доставки</label>
+          <div class="date-container">
+            <div class="date-options">
+              <label class="date-option">
+                <input type="radio" name="delivery_type" value="date" checked>
+                <span>Выбрать дату</span>
+              </label>
+              <label class="date-option">
+                <input type="radio" name="delivery_type" value="call">
+                <span>По звонку</span>
+              </label>
+              <label class="date-option">
+                <input type="radio" name="delivery_type" value="ready">
+                <span>По готовности</span>
+              </label>
+            </div>
+            <input type="date" id="delivery_date" name="delivery_date" required>
+          </div>
         </div>
       </div>
-    </div>
 
+      <div class="form-row">
+        <div class="form-group">
+          <label for="volume">Объём</label>
+          <div class="volume-container">
+            <select id="volume" name="volume" required>
+              <option value="м3">м³</option>
+              <option value="т">т</option>
+            </select> 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group form-group-half">
+          <label for="quantity">Количество</label>
+          <input type="number" id="quantity" name="quantity" placeholder="Количество" required>
+        </div>
+
+        <div class="form-group form-group-half">
+          <label for="price">Цена</label>
+          <input type="number" id="price" name="price" placeholder="Цена" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="district">Район</label>
+          <input type="text" id="district" name="district" placeholder="Район" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="address_name">Адрес, имя</label>
+          <input type="text" id="address_name" name="address_name" placeholder="Адрес, имя" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input type="text" id="phone" name="phone" placeholder="Телефон" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="manager_name">Имя менеджера</label>
+          <input type="text" id="manager_name" name="manager_name" placeholder="Имя менеджера" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="source">Откуда узнали о нас?</label>
+          <input type="text" id="source" name="source" placeholder="Откуда узнали о нас" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="comment">Комментарий</label>
+          <textarea id="comment" name="comment" rows="3" placeholder="Комментарий"></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="carrier">Перевозчик</label>
+          <input type="text" id="carrier" name="carrier" placeholder="Перевозчик">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="commission">Комиссия</label>
+          <input type="number" id="commission" name="commission" placeholder="Комиссия">
+        </div>
+      </div>
+
+      <button type="submit">Отправить</button>
+    </form>
+
+  <script src="ind.js">
     
+  </script>
+  </body>
+  </html>
 
-
-    <div class="form-row">
-      <div class="form-group form-group-half">
-        <label for="quantity">Количество</label>
-        <input type="number" id="quantity" name="quantity" placeholder="Количество" required>
-      </div>
-
-          <div class="form-group form-group-half">
-        <label for="price">Цена</label>
-        <input type="number" id="price" name="price" placeholder="Цена" required>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="district">Район</label>
-        <input type="text" id="district" name="district" placeholder="Район" required>
-      </div>
-    </div>
-
-
-    <div class="form-row">
-      <div class="form-group my-full-width">
-        <label for="address_name">Адрес, имя</label>
-        <input type="text" id="address_name" name="address_name" placeholder="Адрес, имя" required>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="phone">Телефон</label>
-        <input type="text" id="phone" name="phone" placeholder="Телефон" required>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group my-full-width">
-        <label for="comment">Комментарий</label>
-        <textarea id="comment" name="comment" rows="3" placeholder="Комментарий"></textarea>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="carrier">Перевозчик</label>
-        <input type="text" id="carrier" name="carrier" placeholder="Перевозчик" >
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="commission">Комиссия</label>
-        <input type="number" id="commission" name="commission" placeholder="Комиссия" >
-      </div>
-    </div>
-
-    <button type="submit">Отправить</button>
-  </form>
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="ind.js"></script>
-<script src="gugl.js"></script>
-</body>
-</html>
